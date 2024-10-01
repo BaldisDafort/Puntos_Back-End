@@ -16,8 +16,9 @@
   },
   "homepage": "https://github.com/BaldisDafort/Puntos_Back-End#readme",
   "dependencies": {
-    "axios": "^1.7.7",
-    "express": "^4.21.0"
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "mongodb": "^6.9.0"
   },
   "description": ""
 }

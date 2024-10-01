@@ -4,7 +4,7 @@ const app = express();
 const port = 3001;
 
 // Connexion à MongoDB
-mongoose.connect('mongodb://localhost:27017/votreBaseDeDonnees', {
+mongoose.connect('mongodb://localhost:27017/DB1', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });

@@ -10,6 +10,7 @@ let MongoClient = require('mongodb').MongoClient;
 let mongodb = require('mongodb');
 let url = "mongodb://localhost:27017/DB1";
 
+
 let dbo;
 const connectToMongo = async () => {
 try {

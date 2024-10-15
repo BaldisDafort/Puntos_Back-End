@@ -57,23 +57,19 @@ app.get('/users', (req, res) => {
 });
 
 // Endpoint pour ajouter un nouvel utilisateur
-app.post('/users', (req, res) => {
+app.post('/users', async (req, res) => {
     const newUser = req.body;
-    MongoClient.connect(url, (err, db) => {
-        if (err) throw err;
-        let dbo = db.db("DB1");
-        dbo.collection("users").insertOne(newUser, (err, result) => {
-            if (err) {
-                res.status(500).json({ error: 'Erreur lors de l\'ajout de l\'utilisateur' });
-            } else {
-                res.status(201).json({ message: 'Utilisateur ajouté avec succès' });
-            }
-            db.close();
-        });
-    });
+    console.log(newUser)
+    try {
+        const result = await dbo.collection("users").insertOne(newUser);
+        console.log("result", result);
+        res.status(201).json({ message: 'Utilisateur ajouté avec succès, id= ' + result.insertedId });
+    } catch (e) {
+        console.log("error", e);  
+        res.status(500).json({ error: 'Erreur lors de l\'ajout de l\'utilisateur' });
+    }
 });
 
 app.listen(port, () => {
     console.log(`L'application écoute sur le port ${port}`);
 });
-

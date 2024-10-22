@@ -70,6 +70,26 @@ app.post('/users', async (req, res) => {
     }
 });
 
+// Endpoint pour vérifier un utilisateur existant
+app.post('/users/verify', async (req, res) => {
+    const checkUser = req.body;
+    console.log(checkUser)
+    try {
+        const result = await dbo.collection("users").findOne(checkUser);
+        if(result){
+            res.status(201).json({ message: 'Utilisateur vérifié avec succès', result});
+        }
+        else{
+            return res.status(404).json({ message: 'Utilisateur non trouvé ou mot de passe incorrect' });
+        }
+        
+        
+    } catch (e) {
+        console.log("error", e);  
+        res.status(500).json({ error: 'Erreur lors de la vérification de l\'utilisateur' });
+    }
+});
+
 app.listen(port, () => {
     console.log(`L'application écoute sur le port ${port}`);
 });

@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const cors = require('cors')
+const bcrypt = require('bcrypt');
 // Use the cors middleware to enable CORS for all routes
 app.use(cors());
  
@@ -58,9 +59,25 @@ app.get('/users', (req, res) => {
 
 // Endpoint pour ajouter un nouvel utilisateur
 app.post('/users/add', async (req, res) => {
-    const newUser = req.body;
-    console.log(newUser)
+    const {email, username, password} = req.body;
     try {
+
+        //Test pour vérifier si les champs sont remplis
+        if (!email || !username || !password){
+            return res.status(404).json({error : 'L\'e-mail, le nom d\'utilisateur et le mot de passe sont requis'});
+        }
+
+        //Indique le nombre de couche de hachage
+        const saltRounds = 10;
+
+        //Créer une constante en hachant le mot de passe récupéré
+        const hashedPassword = await bcrypt.hash(password, saltRounds)
+
+        const newUser = {
+            email,
+            username,
+            password : hashedPassword
+        }
         const result = await dbo.collection("users").insertOne(newUser);
         console.log("result", result);
         res.status(201).json({ message: 'Utilisateur ajouté avec succès, id= ' + result.insertedId });
@@ -72,20 +89,26 @@ app.post('/users/add', async (req, res) => {
 
 // Endpoint pour vérifier un utilisateur existant
 app.post('/users/verify', async (req, res) => {
-    const checkUser = req.body;
-    console.log(checkUser)
+    const { username, password } = req.body;
+
     try {
-        const result = await dbo.collection("users").findOne(checkUser);
-        if(result){
-            res.status(201).json({ message: 'Utilisateur vérifié avec succès', result});
+        const user = await dbo.collection("users").findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
         }
-        else{
-            return res.status(404).json({ message: 'Utilisateur non trouvé ou mot de passe incorrect' });
+
+        // Comparer le mot de passe fourni avec le mot de passe haché dans la BDD
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if (isPasswordValid) {
+            res.status(200).json({ message: 'Utilisateur vérifié avec succès', user });
+        } else {
+            res.status(401).json({ message: 'Mot de passe incorrect' });
         }
-        
-        
+
     } catch (e) {
-        console.log("error", e);  
+        console.error("Erreur lors de la vérification de l'utilisateur:", e);
         res.status(500).json({ error: 'Erreur lors de la vérification de l\'utilisateur' });
     }
 });

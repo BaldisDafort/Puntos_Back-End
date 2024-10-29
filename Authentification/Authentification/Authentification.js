@@ -57,7 +57,7 @@ app.get('/users', (req, res) => {
 });
 
 // Endpoint pour ajouter un nouvel utilisateur
-app.post('/users', async (req, res) => {
+app.post('/users/add', async (req, res) => {
     const newUser = req.body;
     console.log(newUser)
     try {

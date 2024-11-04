@@ -76,7 +76,9 @@ app.post('/users/add', async (req, res) => {
         const newUser = {
             email,
             username,
-            password : hashedPassword
+            password : hashedPassword,
+            Parties_jouées : 0,
+            Parties_gagnées : 0
         }
         const result = await dbo.collection("users").insertOne(newUser);
         console.log("result", result);

@@ -19,7 +19,7 @@ const connectToMongo = async () => {
         console.log("Trying to connect to MongoDB...");
         const client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log("Connected to MongoDB");
-        dbo = client.db("mydatabase");
+        dbo = client.db("DB1");
     } catch (err) {
         console.error("Error connecting to MongoDB:", err);
         process.exit(1); // Arrêter le processus si la connexion échoue

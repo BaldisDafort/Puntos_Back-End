@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // URL de connexion MongoDB
-const url = "mongodb://admin:adminMONGO@localhost:27015/mydatabase?authSource=admin";
+const url = "mongodb://localhost:27017";
 let dbo;
 
 // Connexion à MongoDB

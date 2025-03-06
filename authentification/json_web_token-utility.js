@@ -24,7 +24,7 @@ function isJSONWebTokenInitialized() {
 function generateToken(payload) {
 
     if(!isJSONWebTokenInitialized()) {
-        throw Error("Les variables d'environement de JSON Web Token ne sont pas initialisée. Vérifier le fichier .env")
+        throw Error("Les variables d environement de JSON Web Token ne sont pas initialisée. Vérifier le fichier .env")
     }
 
     try {

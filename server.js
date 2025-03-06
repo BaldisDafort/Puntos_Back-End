@@ -123,6 +123,14 @@ app.post('/users/login', async (req, res, next) => {
     }
 });
 
+const authMiddleware = require('./authMiddleware');
+
+// Route protégée par authentification
+app.get('/protected', authMiddleware, (req, res) => {
+  res.status(200).json({ message: "Vous avez accès à cette route protégée.", user: req.user });
+});
+
+
 //Prise en charge des erreurs (mettre à la fin du fichier pour récupérer toutes les erreurs)
 app.use(errorHandler);
 

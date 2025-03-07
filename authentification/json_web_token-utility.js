@@ -24,13 +24,13 @@ function isJSONWebTokenInitialized() {
 function generateToken(payload) {
 
     if(!isJSONWebTokenInitialized()) {
-        throw Error("Les variables d environement de JSON Web Token ne sont pas initialisée. Vérifier le fichier .env")
-    }
+        throw Error("Les variables d environement de JSON Web Token ne sont pas initialisée. Vérifier le fichier .env");
+    };
 
     try {
-    return jwt.sign(payload, jwtSecret, { expiresIn: jwtExpiresIn });
+        return jwt.sign(payload, jwtSecret, { expiresIn: jwtExpiresIn });
     } catch (error) {
-    throw new Error(`Erreur lors de la génération du token: ${error.message}`);
+        throw new Error(`Erreur lors de la génération du token: ${error.message}`);
     }
 }
 
@@ -43,13 +43,13 @@ function generateToken(payload) {
 function verifyToken(token) {
     
     if(!isJSONWebTokenInitialized()) {
-        throw Error("Les variables d'environnement de JSON Web Token ne sont pas initialisées. Vérifier le fichier .env")
-    }
+        throw Error("Les variables d'environnement de JSON Web Token ne sont pas initialisées. Vérifier le fichier .env");
+    };
 
     try {
-    return jwt.verify(token, jwtSecret);
+        return jwt.verify(token, jwtSecret);
     } catch (error) {
-    throw new Error(`Token invalide ou expiré: ${error.message}`);
+        throw new Error(`Token invalide ou expiré: ${error.message}`);
     }
 }
 
@@ -57,4 +57,4 @@ module.exports = {
     verifyToken,
     isJSONWebTokenInitialized,
     generateToken
-  };
+};

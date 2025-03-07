@@ -10,9 +10,9 @@ const saltRounds = process.env.BCRYPT_SALT_ROUNDS ? parseInt(process.env.BCRYPT_
  */
 async function hashPassword(password) {
     try {
-      return await bcrypt.hash(password, saltRounds);
+        return await bcrypt.hash(password, saltRounds);
     } catch (error) {
-      throw new Error(`Erreur lors du hachage du mot de passe: ${error.message}`);
+        throw new Error(`Erreur lors du hachage du mot de passe: ${error.message}`);
     }
 }
 
@@ -24,13 +24,13 @@ async function hashPassword(password) {
  */
 async function comparePassword(password, hash) {
     try {
-      return await bcrypt.compare(password, hash);
+        return await bcrypt.compare(password, hash);
     } catch (error) {
-      throw new Error(`Erreur lors de la comparaison du mot de passe: ${error.message}`);
+        throw new Error(`Erreur lors de la comparaison du mot de passe: ${error.message}`);
     }
 }
 
 module.exports = {
     hashPassword,
     comparePassword,
-  };
+};

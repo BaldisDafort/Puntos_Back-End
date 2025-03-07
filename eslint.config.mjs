@@ -8,18 +8,19 @@ export default [
     languageOptions: {
       sourceType: "commonjs",
       globals: {
-        ...globals.node, // Utilisation des variables globales de Node.js
-        ...globals.browser // Si tu fais aussi du front, garde-le
+        ...globals.node, // Variables globales Node.js
+        ...globals.browser // Pour le front si besoin
       }
     },
     rules: {
-      "indent": ["warn", 4], // Indentation avec 2 espaces
-      "semi": ["error", "always"], // Imposer le point-virgule
-      "no-unused-vars": ["warn"], // Avertir sur les variables non utilisées
-      "no-console": "off", // Autoriser `console.log` (utile en dev)
-      "eqeqeq": ["error", "always"], // Forcer `===` et `!==`
-      "curly": "error" // Exiger des accolades `{}` même pour une seule ligne
+      "indent": ["warn", 4], // Indentation 2 espaces
+      "semi": ["error", "always"], // Point-virgule obligatoire
+      "no-unused-vars": ["warn", { "argsIgnorePattern": "^next$" }], // Ignore `next`
+      "no-undef": ["warn", { "typeof": true }], // Ignore erreurs `err` si globalement défini
+      "no-console": "off", // Autoriser `console.log`
+      "eqeqeq": ["error", "always"], // Imposer `===` et `!==`
+      "curly": "error" // Exiger des `{}` même sur une seule ligne
     }
   },
-  js.configs.recommended // Intégration des règles recommandées de @eslint/js
+  js.configs.recommended // Règles recommandées
 ];

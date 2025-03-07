@@ -1,4 +1,4 @@
-const { verifyToken } = require('./authentification/json_web_token-utility');
+const { verifyToken } = require('./json_web_token-utility');
 
 /**
  * Middleware pour protéger les routes nécessitant une authentification.

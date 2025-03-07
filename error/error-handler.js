@@ -20,7 +20,7 @@ function errorHandler(err, req, res, next) {
   
     // Envoi de la réponse JSON avec le statut et le message d'erreur
     res.status(statusCode).json(message);
-  }
+}
   
-  module.exports = errorHandler;
+module.exports = errorHandler;
   

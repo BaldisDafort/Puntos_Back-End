@@ -8,6 +8,7 @@ const { isPasswordValid } = require('./authentification/password-validity');
 const { hashPassword, comparePassword } = require('./authentification/bcrypt-utility');
 const { generateToken } = require('./authentification/json_web_token-utility');
 const errorHandler = require('./error/error-handler');
+const authMiddleware = require ('./authentification/auth-middleware');
 
 // Middleware
 app.use(cors());
@@ -56,7 +57,7 @@ app.post('/users/add', async (req, res, next) => {
     if (!email || !username || !password) {
 
         const error = new Error("L'email, l'username ou le password sont absents");
-        error.statusCode = 401 // Code HTTP spécifique
+        error.statusCode = 401; // Code HTTP spécifique
         error.details = 'Données manquantes.'; // Message d'origine
 
         next(error); // Envoyer l'erreur au middleware de gestion    
@@ -110,7 +111,7 @@ app.post('/users/login', async (req, res, next) => {
         } else {
             const error = new Error("Le mot de passe n'est pas valide");
             error.statusCode = 401; // Code HTTP spécifique
-            error.details = err.message || 'Erreur interne du serveur'; // Message d'origine
+            error.details = 'Erreur interne du serveur'; // Message d'origine
     
             next(error); // Envoyer l'erreur au middleware de gestion
         }
@@ -123,11 +124,9 @@ app.post('/users/login', async (req, res, next) => {
     }
 });
 
-const authMiddleware = require('./authMiddleware');
-
 // Route protégée par authentification
 app.get('/protected', authMiddleware, (req, res) => {
-  res.status(200).json({ message: "Vous avez accès à cette route protégée.", user: req.user });
+    res.status(200).json({ message: "Vous avez accès à cette route protégée.", user: req.user });
 });
 
 

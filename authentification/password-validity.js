@@ -9,11 +9,12 @@ const MIN_SCORE_TO_VALIDATE = 1;
 function isPasswordValid (password) {
 
     // Compteur de score
-    let score = 0;
+    var score = 0;
 
     // Check de longueur
     if (password.length >= PASSWORD_MIN_LENGTH) {
-        score = score++;
+        
+        score = score+=1;
     }
 
     // Validation

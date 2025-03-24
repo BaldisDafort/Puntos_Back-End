@@ -9,9 +9,11 @@ const { hashPassword, comparePassword } = require('./authentification/bcrypt-uti
 const { generateToken } = require('./authentification/json_web_token-utility');
 const errorHandler = require('./error/error-handler');
 const authMiddleware = require ('./authentification/auth-middleware');
+const logger = require('./requests/morgan-logger');
 
 // Middleware
 app.use(cors());
+app.use(logger);
 app.use(express.json());
 
 // URL de connexion MongoDB
@@ -52,7 +54,7 @@ app.get('/users', async (req, res, next) => {
 // Ajouter un utilisateur
 app.post('/users/add', async (req, res, next) => {
     const { email, username, password } = req.body;
-
+    
     // Validation des données
     if (!email || !username || !password) {
 
@@ -60,7 +62,8 @@ app.post('/users/add', async (req, res, next) => {
         error.statusCode = 401; // Code HTTP spécifique
         error.details = 'Données manquantes.'; // Message d'origine
 
-        next(error); // Envoyer l'erreur au middleware de gestion    
+        next(error); // Envoyer l'erreur au middleware de gestion   
+        return; 
     }
     // Check la validité de la longueur du mot de passe
     if(!isPasswordValid(password)) {
@@ -70,10 +73,11 @@ app.post('/users/add', async (req, res, next) => {
         error.details ='Votre mot de passe doit avoir plus de 8 caractères'; // Message d'origine
 
         next(error); // Envoyer l'erreur au middleware de gestion
+        return;
     }
 
     try {
-        const hashedPassword = hashPassword(password);
+        const hashedPassword = await hashPassword(password);
 
         const newUser = {
             email,
@@ -97,6 +101,8 @@ app.post('/users/add', async (req, res, next) => {
 // Authentifier un utilisateur
 app.post('/users/login', async (req, res, next) => {
     const { username, password } = req.body;
+    console.log(username, password);
+    
 
     try {
         const user = await dbo.collection("users").findOne({ username });
